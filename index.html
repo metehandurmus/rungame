@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+
+<body onclick="f()">
+    <div id="game">
+        <div class="btn start">Start</div>
+        <div class="btns">
+            <div class="btn skor"></div>
+        </div>
+        <div id="hero"></div>
+        <div id="cactus"></div>
+        <div id="cactus2"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        var time;
+        var kontrol = true;
+        const hero = document.querySelector("#hero");
+        const cactus = document.querySelector("#cactus");
+        const cactus2 = document.querySelector("#cactus2");
+        const game = document.querySelector("#game");
+        function f() {
+            if (kontrol) {
+                $('.start').hide();
+                $('.reply').hide();
+                $('.skor').hide();
+                time = 0;
+                kontrol = false;
+            }
+            $('#hero').css('background-image', 'url(run.gif)');
+            if (game.classList != "game-move") {
+                game.classList.add('game-move')
+            }
+            if (cactus.classList != "cactus-move") {
+                cactus.classList.add('cactus-move')
+            }
+            if (cactus2.classList != "cactus-move-2") {
+                cactus2.classList.add('cactus-move-2')
+            }
+            if (hero.classList != "hero-move") {
+                hero.classList.add('hero-move')
+                setTimeout(function () {
+                    hero.classList.remove('hero-move')
+                }, 750)
+            }
+        }
+
+        var controller = setInterval(function(){
+            time += 1;
+            var heroPosition = parseInt(window.getComputedStyle(hero).getPropertyValue("bottom"));
+            var cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
+            var cactusPosition2 = parseInt(window.getComputedStyle(cactus2).getPropertyValue("left"));
+            
+            if( (cactusPosition>0 && cactusPosition<100 && heroPosition<50) || (cactusPosition2>0 && cactusPosition2<100 && heroPosition<50) ) {
+                $('.skor').show();
+                $('.reply').show();
+                $('#hero').css('background-image', 'url(stop.gif)');
+                hero.classList.remove('hero-move')
+                cactus.classList.remove('cactus-move')
+                cactus2.classList.remove('cactus-move-2')
+                game.classList.remove('game-move')
+                $('.skor').html('Score: '+(time/100));
+                kontrol = true;
+            }
+            
+        }, 10)
+    </script>
+</body>
+
+</html>
